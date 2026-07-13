@@ -359,7 +359,6 @@ results <- purrr::map_dfr(datasets, function(ds){
 })
 
 write_csv(results, "download_log.csv")
-write_csv(results, "download_log.csv")
 write_csv(label_map, file.path("output", "variable_dictionary.csv"))
 
 

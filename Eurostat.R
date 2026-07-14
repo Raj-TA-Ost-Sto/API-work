@@ -1,7 +1,5 @@
-dir.create("C:/Users/prabakaran.rajasekar/Downloads/API/API/data/raw")
-
 ############################################################
-## EUROSTAT BULK DOWNLOAD PROJECT
+## EUROSTAT API Data 
 ############################################################
 
 # Install packages (run once)

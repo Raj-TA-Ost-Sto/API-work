@@ -69,7 +69,8 @@ bd_size_meta <-
 # Turn years into wide format
 bd_size_meta <- 
   bd_size_meta %>% 
-  pivot_wider(id_cols = -c(7:8), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -87,7 +88,8 @@ env_esst_gg_meta <-
 
 env_esst_gg_meta <- 
   env_esst_gg_meta %>% 
-  pivot_wider(id_cols = -c(7:8), values_from = "values",
+  pivot_wider(id_cols = everything(),
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -104,7 +106,8 @@ env_ac_ainah_r2_meta <-
 
 env_ac_ainah_r2_meta <- 
   env_ac_ainah_r2_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -121,7 +124,8 @@ env_ac_taxind2_meta <-
 
 env_ac_taxind2_meta <- 
   env_ac_taxind2_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
   
 #####################
@@ -138,7 +142,8 @@ env_ac_pefa04_meta <-
   
 env_ac_pefa04_meta <- 
   env_ac_pefa04_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(),
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -155,7 +160,8 @@ env_ac_ccminv_meta <-
 
 env_ac_ccminv_meta <- 
   env_ac_ccminv_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -173,7 +179,8 @@ env_wasgen_meta <-
 
 env_wasgen_meta <- 
   env_wasgen_meta %>% 
-  pivot_wider(id_cols = -c(7:8), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -189,7 +196,8 @@ env_wat_cat_meta <- add_metadata(
 
 env_wat_cat_meta <- 
   env_wat_cat_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -205,7 +213,8 @@ rd_e_berdfundr2_meta <- add_metadata(
 
 rd_e_berdfundr2_meta <- 
   rd_e_berdfundr2_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -221,7 +230,8 @@ nama_10_a64_meta <- add_metadata(
 
 nama_10_a64_meta <- 
   nama_10_a64_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 
 #####################
@@ -237,7 +247,8 @@ nama_10_a64_e_meta <- add_metadata(
 
 nama_10_a64_e_meta <- 
   nama_10_a64_e_meta %>% 
-  pivot_wider(id_cols = -c(6:7), values_from = "values",
+  pivot_wider(id_cols = everything(), 
+              values_from = "values",
               names_from = "TIME_PERIOD")
 #####################
 
@@ -250,22 +261,21 @@ nama_10_a64_e_meta <-
 
 # "bd_size"
 bd_size_total <- bd_size_meta %>% 
-  group_by(geo, indic_sbs, indic_sbs_name, geo_name, freq) %>%
+  group_by(geo, indic_sbs, indic_sbs_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
   ) %>% 
   mutate(geog = tolower(geo),
          var_id = tolower(indic_sbs),
-         var_name = indic_sbs_name,
-         freq_name = "a") %>% 
+         var_name = indic_sbs_name) %>% 
   select(-c(geo, indic_sbs, indic_sbs_name))
 
 
 #####################
 # "env_esst_gg"
 env_esst_gg_total <- env_esst_gg_meta %>% 
-  group_by(geo, ceparema, ceparema_name, geo_name, freq) %>%
+  group_by(geo, ceparema, ceparema_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -280,7 +290,7 @@ env_esst_gg_total <- env_esst_gg_meta %>%
 #####################
 # "env_ac_ainah_r2"
 env_ac_ainah_r2_total <- env_ac_ainah_r2_meta %>% 
-  group_by(geo, airpol, airpol_name, geo_name, freq) %>%
+  group_by(geo, airpol, airpol_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -293,7 +303,7 @@ env_ac_ainah_r2_total <- env_ac_ainah_r2_meta %>%
 #####################
 # "env_ac_taxind2"
 env_ac_taxind2_total <- env_ac_taxind2_meta %>% 
-  group_by(geo, tax, tax_name, geo_name, freq) %>%
+  group_by(geo, tax, tax_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -306,7 +316,7 @@ env_ac_taxind2_total <- env_ac_taxind2_meta %>%
 #####################
 # "env_ac_pefa04"
 env_ac_pefa04_total <- env_ac_pefa04_meta %>% 
-  group_by(geo, indic_pefa, indic_pefa_name, geo_name, freq) %>%
+  group_by(geo, indic_pefa, indic_pefa_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -319,7 +329,7 @@ env_ac_pefa04_total <- env_ac_pefa04_meta %>%
 #####################
 # "env_ac_ccminv"
 env_ac_ccminv_total <- env_ac_ccminv_meta %>% 
-  group_by(geo, env_pa, env_pa_name, geo_name, freq) %>%
+  group_by(geo, env_pa, env_pa_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -332,7 +342,7 @@ env_ac_ccminv_total <- env_ac_ccminv_meta %>%
 #####################
 # "env_wasgen"
 env_wasgen_total <- env_wasgen_meta %>% 
-  group_by(geo, hazard, hazard_name, geo_name, freq) %>%
+  group_by(geo, hazard, hazard_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -345,7 +355,7 @@ env_wasgen_total <- env_wasgen_meta %>%
 #####################
 # "env_wat_cat"
 env_wat_cat_total <- env_wat_cat_meta %>% 
-  group_by(geo, wat_proc, wat_proc_name, geo_name, freq) %>%
+  group_by(geo, wat_proc, wat_proc_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -358,20 +368,21 @@ env_wat_cat_total <- env_wat_cat_meta %>%
 #####################
 # "rd_e_berdfundr2"
 rd_e_berdfundr2_total <- rd_e_berdfundr2_meta %>% 
-  group_by(geo, sectfund, sectfund_name, geo_name, freq) %>%
+  group_by(geo, sectfund, sectfund_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
   ) %>% 
   mutate(geog = tolower(geo),
-         var_id = tolower(sectfund),
-         var_name = sectfund_name) %>% 
+#         var_id = tolower(sectfund),
+         var_name = sectfund_name,
+         var_id = ifelse(tolower(sectfund) == "total","total_all_sect", tolower(sectfund))) %>% 
   select(-c(geo, sectfund, sectfund_name))
 
 #####################
 # "nama_10_a64"
 nama_10_a64_total <- nama_10_a64_meta %>% 
-  group_by(geo, na_item, na_item_name, geo_name, freq) %>%
+  group_by(geo, na_item, na_item_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -384,7 +395,7 @@ nama_10_a64_total <- nama_10_a64_meta %>%
 #####################
 # "nama_10_a64_e"
 nama_10_a64_e_total <- nama_10_a64_e_meta %>% 
-  group_by(geo, na_item, na_item_name, geo_name, freq) %>%
+  group_by(geo, na_item, na_item_name, geo_name, freq, freq_name) %>%
   summarise(
     across(where(is.numeric), sum, na.rm = TRUE),
     .groups = "drop"
@@ -397,22 +408,58 @@ nama_10_a64_e_total <- nama_10_a64_e_meta %>%
 #####################
 
 # Combine datasets
+keys <- c("var_id", "var_name", "geog", "geo_name", "freq", "freq_name")
 
-# Edit total dataset (remove commas from names
-# because it breaks the DDF datapackage)
 
-#dataset_total$var_name <- gsub(",", ";", dataset_total$var_name)
+dfs <- list(
+  env_esst_gg_total,
+  env_ac_ainah_r2_total,
+  env_ac_taxind2_total,
+  env_ac_pefa04_total,
+  env_ac_ccminv_total,
+  env_wasgen_total,
+  env_wat_cat_total,
+  rd_e_berdfundr2_total,
+  nama_10_a64_total,
+  nama_10_a64_e_total
+)
 
+dataset_total <- map_dfr(dfs, function(df) {
+  df %>%
+    pivot_longer(
+      cols = -all_of(keys),
+      names_to = "year",
+      values_to = "value"
+    )
+}) %>%
+  group_by(across(all_of(keys)), year) %>%
+  summarise(
+    value = first(na.omit(value)),
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = value
+  )
+
+dataset_total$var_name <- gsub(",", ":", dataset_total$var_name) # Cannot have commas in the names
+dataset_total$freq <- tolower(dataset_total$freq) # ID must be lowercase
 
 ############### Create DDf with every variable #################################
 
-create_ddf(dataset = bd_size_total,
-           variable_id = "indic_sbs",
-           variable_name = "indic_sbs_name",
+create_ddf(dataset = dataset_total,
+           variable_id = "var_id",
+           variable_name = "var_name",
            entity_id = "geog",
            entity_name = "geo_name",
-           datacolumns = "6-20",
-           tag_id = "freq_name",
-           tag_name = "freq"
+           datacolumns = "7-58",
+           tag_id = "freq",
+           tag_name = "freq_name"
 )
 ################################################################################
+
+# Test for if there are duplicates in the var_id
+# duplicates <- dataset_total %>%
+#   count(geog, var_id) %>%
+#   filter(n > 1)
+# duplicates
